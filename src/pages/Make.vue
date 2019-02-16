@@ -14,7 +14,7 @@
           :id="`${key}File`"
           type="file"
           @change="handleChange(arguments[0], key)"
-          accept="image/jpeg, image/jpg, image/png"
+          accept="image/*"
         >
       </div>
       <div>
