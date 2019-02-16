@@ -1,0 +1,15 @@
+root = true
+# 对所有文件应用下面的规则
+[*]
+# 编码规则用utf-8
+charset = utf-8
+# 缩进用空格
+indent_style = space
+# 缩进数量为2个空格
+indent_size = 2
+# 换行符格式
+end_of_line = lf
+# 是否在文件的最后插入一个空行
+insert_final_newline = true
+# 是否删除行尾的空格
+trim_trailing_whitespace = true
