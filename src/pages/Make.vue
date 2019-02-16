@@ -2,7 +2,7 @@
   <div class="page">
     <div class="page-header">制作多合一收款码</div>
     <div class="page-content">
-      <div v-for="(val,key) in dataList" :key="key">
+      <div v-for="(val,key) in dataMap" :key="key">
         <label
           class="picker-button"
           :class="[val.result ? 'is-active': '']"
@@ -21,6 +21,7 @@
         <button class="submit-button" @click="handleSubmit">合成</button>
       </div>
     </div>
+    <div class="copyright">&copy;&nbsp;2019&nbsp;Coande</div>
   </div>
 </template>
 
@@ -34,7 +35,7 @@ export default {
     return {
       CANVASMAXWIDTH: 400,
       CANVASMAXHEIGHT: 600,
-      dataList: {
+      dataMap: {
         alipay: {
           name: "支付宝",
           result: "",
@@ -61,6 +62,7 @@ export default {
       if (!file) {
         return;
       }
+      // 图片压缩一下识别率更高，特别是手机拍的照片分辨率高导致识别失败率较高
       const img = new Image();
       img.src = URL.createObjectURL(file);
       let imgWidth, imgHeight, targetWidth, targetHeight;
@@ -100,10 +102,10 @@ export default {
           return;
         }
         if (resultObj && resultObj.data) {
-          if (!resultObj.data.startsWith(this.dataList[key].startsWith)) {
-            alert(`不是${this.dataList[key].name}收款码`);
+          if (!resultObj.data.startsWith(this.dataMap[key].startsWith)) {
+            alert(`不是${this.dataMap[key].name}收款码`);
           } else {
-            this.dataList[key].result = resultObj.data;
+            this.dataMap[key].result = resultObj.data;
           }
         } else {
           alert("找不到二维码");
@@ -111,9 +113,9 @@ export default {
       };
     },
     handleSubmit() {
-      const alipayResult = this.dataList.alipay.result;
-      const wechatResult = this.dataList.wechat.result;
-      const qqResult = this.dataList.qq.result;
+      const alipayResult = this.dataMap.alipay.result;
+      const wechatResult = this.dataMap.wechat.result;
+      const qqResult = this.dataMap.qq.result;
       const resultList = [];
       if (alipayResult) {
         resultList.push(`alipay=${encodeURIComponent(alipayResult)}`);
@@ -125,15 +127,11 @@ export default {
         resultList.push(`qq=${encodeURIComponent(qqResult)}`);
       }
       if (resultList.length) {
-        if (window.location.href.indexOf("?") === -1) {
-          window.location.href = `${window.location.href}?${resultList.join(
-            "&"
-          )}`;
-        } else {
-          window.location.href = `${window.location.href}&${resultList.join(
-            "&"
-          )}`;
-        }
+        // 有部分app或网站可能会自动加个来源参数
+        const tempString = window.location.href.indexOf("?") === -1 ? "?" : "&";
+        window.location.href = `${
+          window.location.href
+        }${tempString}${resultList.join("&")}`;
       } else {
         alert("请先选择二维码");
       }
@@ -143,6 +141,10 @@ export default {
 </script>
 
 <style scoped>
+.page {
+  height: 100%;
+  position: relative;
+}
 .page-header {
   height: 20vh;
   font-size: 2rem;
@@ -184,6 +186,13 @@ export default {
 
 .hidden-input {
   display: none;
+}
+.copyright {
+  color: #cecece;
+  position: absolute;
+  bottom: 1rem;
+  width: 100%;
+  text-align: center;
 }
 </style>
 

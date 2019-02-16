@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import MakePage from '@/pages/Make';
-import ResultPage from '@/pages/Result';
+import MakePage from "@/pages/Make";
+import ResultPage from "@/pages/Result";
 export default {
   components: {
     MakePage,
@@ -18,19 +18,22 @@ export default {
       showMake: true
     };
   },
-  methods: {
-  },
+  methods: {},
   mounted() {
-    const alipayUrl = decodeURIComponent(this.$utils.getQueryVariable('alipay'));
-    const wechatUrl = decodeURIComponent(this.$utils.getQueryVariable('wechat'));
-    const qqUrl = decodeURIComponent(this.$utils.getQueryVariable('qq'));
+    const alipayUrl = decodeURIComponent(
+      this.$utils.getQueryVariable("alipay")
+    );
+    const wechatUrl = decodeURIComponent(
+      this.$utils.getQueryVariable("wechat")
+    );
+    const qqUrl = decodeURIComponent(this.$utils.getQueryVariable("qq"));
     if (alipayUrl || wechatUrl || qqUrl) {
       this.showMake = false;
     } else {
       this.showMake = true;
     }
   }
-}
+};
 </script>
 
 
@@ -38,9 +41,9 @@ export default {
 #app {
   max-width: 400px;
   width: 100%;
+  height: 100%;
   text-align: center;
   margin: 0 auto;
-  height: 100%;
 }
 #app >>> * {
   box-sizing: border-box;
@@ -49,7 +52,8 @@ export default {
 </style>
 
 <style>
-html,body {
+html,
+body {
   padding: 0;
   margin: 0;
   height: 100%;

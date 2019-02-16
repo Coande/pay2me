@@ -1,29 +1,27 @@
 <template>
   <div class="page">
     <div class="page-header">
-      <i
-        v-for="(val,key) in showDataList"
-        :key="key"
-        :class="['iconfont', `icon-${key}`]"
-      ></i>
+      <i v-for="(val,key) in showdataMap" :key="key" :class="['iconfont', `icon-${key}`]"></i>
     </div>
     <div class="page-content">
       <img :src="imgSrc">
     </div>
     <div class="page-footer">{{tips}}</div>
+    <img v-if="coverImgSrc" class="cover-image" :src="coverImgSrc">
   </div>
 </template>
 
 <script>
 import qrcode from "qrcode";
-import html2canvas from 'html2canvas';
+import html2canvas from "html2canvas";
 
 export default {
   data() {
     return {
       imgSrc: "",
+      coverImgSrc: "",
       tips: "扫一扫向我付款",
-      dataList: {
+      dataMap: {
         alipay: {
           name: "支付宝",
           result: ""
@@ -41,67 +39,64 @@ export default {
     };
   },
   computed: {
-    showDataList() {
-      const keys = Object.keys(this.dataList).filter(key => {
-        return (this.dataList[key].result && !this.current) || this.current === key
+    showdataMap() {
+      const keys = Object.keys(this.dataMap).filter(key => {
+        return (
+          (this.dataMap[key].result && !this.current) || this.current === key
+        );
       });
       let result = {};
-      Object.keys(this.dataList).forEach(key => {
+      Object.keys(this.dataMap).forEach(key => {
         if (keys.indexOf(key) !== -1) {
-          result[key] = this.dataList[key];
+          result[key] = this.dataMap[key];
         }
       });
       return result;
     }
   },
   async mounted() {
-    Object.keys(this.dataList).forEach(key => {
-      this.dataList[key].result = decodeURIComponent(
+    Object.keys(this.dataMap).forEach(key => {
+      this.dataMap[key].result = decodeURIComponent(
         this.$utils.getQueryVariable(key)
       );
     });
-    if (!this.$utils.getQueryVariable('production')) {
-      this.current = '';
-      this.imgSrc = await qrcode.toDataURL(`${window.location.href}&production=1`);
-      html2canvas(document.body).then(function(canvas) {
-        const pageDataURL = canvas.toDataURL();
-        const pageImage = new Image();
-        pageImage.src = pageDataURL;
-        pageImage.style.position = 'absolute';
-        pageImage.style.top = '0';
-        pageImage.style.left = '0';
-        pageImage.style.width = '100%';
-        document.body.appendChild(pageImage);
-        alert('你可以通过长按来保存当前图片');
+    if (!this.$utils.getQueryVariable("production")) {
+      this.current = "";
+      this.imgSrc = await qrcode.toDataURL(
+        `${window.location.href}&production=1`
+      );
+      html2canvas(document.body).then(canvas => {
+        this.coverImgSrc = canvas.toDataURL();
+        alert("你可以通过长按来保存当前图片");
       });
       return;
     }
     if (navigator.userAgent.match(/Alipay/i)) {
       // 支付宝
-      if (this.dataList.alipay.result) {
-        this.imgSrc = await qrcode.toDataURL(this.dataList.alipay.result);
-        window.location.href = this.dataList.alipay.result;
+      if (this.dataMap.alipay.result) {
+        this.imgSrc = await qrcode.toDataURL(this.dataMap.alipay.result);
+        window.location.href = this.dataMap.alipay.result;
         this.current = "alipay";
       } else {
-        alert('不支持支付宝付款');
+        alert("不支持支付宝付款");
       }
     } else if (navigator.userAgent.match(/MicroMessenger\//i)) {
       // 微信
-      if (this.dataList.wechat.result) {
-        this.imgSrc = await qrcode.toDataURL(this.dataList.wechat.result);
+      if (this.dataMap.wechat.result) {
+        this.imgSrc = await qrcode.toDataURL(this.dataMap.wechat.result);
         this.tips = "长按识别二维码";
         this.current = "wechat";
       } else {
-        alert('不支持微信付款');
+        alert("不支持微信付款");
       }
     } else if (navigator.userAgent.match(/QQ\//i)) {
       // QQ
-      if (this.dataList.qq.result) {
-        this.imgSrc = await qrcode.toDataURL(this.dataList.qq.result);
+      if (this.dataMap.qq.result) {
+        this.imgSrc = await qrcode.toDataURL(this.dataMap.qq.result);
         this.tips = "长按识别二维码";
         this.current = "qq";
       } else {
-        alert('不支持QQ付款');
+        alert("不支持QQ付款");
       }
     } else {
       // 其它
@@ -111,7 +106,7 @@ export default {
       // 如果有支付宝二维码，自动调起支付宝支付
       const aObj = document.createElement("a");
       aObj.href = `alipays://platformapi/startapp?saId=10000007&qrcode=${encodeURIComponent(
-        this.dataList.alipay.result
+        this.dataMap.alipay.result
       )}`;
       aObj.click();
     }
@@ -163,5 +158,11 @@ export default {
   align-items: center;
   justify-content: center;
   font-size: 2rem;
+}
+.cover-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
 }
 </style>
