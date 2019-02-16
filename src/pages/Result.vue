@@ -80,7 +80,7 @@ export default {
       // 支付宝
       if (this.dataList.alipay.result) {
         this.imgSrc = await qrcode.toDataURL(this.dataList.alipay.result);
-        window.location.href = alipayUrl;
+        window.location.href = this.dataList.alipay.result;
         this.current = "alipay";
       } else {
         alert('不支持支付宝付款');
