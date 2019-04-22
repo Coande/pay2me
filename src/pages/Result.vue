@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div ref="page" class="page">
     <div class="page-header">
       <i v-for="(val,key) in showdataMap" :key="key" :class="['iconfont', `icon-${key}`]"></i>
     </div>
@@ -65,9 +65,13 @@ export default {
       this.imgSrc = await qrcode.toDataURL(
         `${window.location.href}&production=1`
       );
-      html2canvas(document.body).then(canvas => {
+      html2canvas(this.$refs.page).then(canvas => {
         this.coverImgSrc = canvas.toDataURL();
-        alert("你可以通过长按来保存当前图片");
+        if (this.getIsMobile()) {
+          alert("你可以通过长按来保存当前图片");
+        } else {
+          alert("你可以右键另存当前图片");
+        }
       });
       return;
     }
@@ -110,6 +114,24 @@ export default {
       )}`;
       aObj.click();
     }
+  },
+  methods: {
+    getIsMobile() {
+      // code from: https://www.cnblogs.com/laq627/p/5848680.html
+      const sUserAgent = navigator.userAgent.toLowerCase();
+      const bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+      const bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+      const bIsMidp = sUserAgent.match(/midp/i) == "midp";
+      const bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+      const bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+      const bIsAndroid = sUserAgent.match(/android/i) == "android";
+      const bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+      const bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+      if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+          return true;
+      }
+      return false;
+    }
   }
 };
 </script>
@@ -117,13 +139,15 @@ export default {
 
 <style scoped>
 .page {
+  position: relative;
   height: 100%;
+  max-height: 680px;
   display: flex;
   flex-direction: column;
 }
 .page-header {
   background: #eeeeee;
-  flex: 0 0 20vh;
+  flex: 0 0 20%;
   display: flex;
   align-items: center;
   justify-content: center;
