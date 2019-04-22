@@ -1,29 +1,9 @@
-# pay2me
+<img src="https://i.loli.net/2019/04/10/5cadb0e305505.jpg" alt="效果展示" width="400px" />
 
-## Project setup
-```
-yarn install
-```
+项目地址：https://github.com/Coande/pay2me
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
+预览地址：https://e12e.com/pay2me/
 
-### Compiles and minifies for production
-```
-yarn run build
-```
+集合了多合一收款码的制作、展示，纯前端实现。支持微信、支付宝、QQ收款码的多合一。
 
-### Run your tests
-```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+该项目参考了[ mengkunsoft 的 OneQRCode ](https://github.com/mengkunsoft/OneQRCode)
