@@ -17,6 +17,10 @@
           accept="image/*"
         >
       </div>
+      <div class="result-type">
+        <span class="result-type__item result-type__normal" :class="[resultType==='resultNormal' ? 'active' : '']" @click="resultType = 'resultNormal'">正常</span>
+        <span class="result-type__item result-type__fun" :class="[resultType==='resultFun' ? 'active' : '']" @click="resultType = 'resultFun'">表情</span>
+      </div>
       <div>
         <button class="submit-button" @click="handleSubmit">合成</button>
       </div>
@@ -52,7 +56,8 @@ export default {
           startsWith:
             "https://i.qianbao.qq.com/wallet/sqrcode.htm?m=tenpay&f=wallet&u="
         }
-      }
+      },
+      resultType: 'resultNormal'
     };
   },
   methods: {
@@ -126,6 +131,7 @@ export default {
       if (qqResult) {
         resultList.push(`qq=${encodeURIComponent(qqResult)}`);
       }
+      resultList.push(`resultType=${this.resultType}`);
       if (resultList.length) {
         // 有部分app或网站可能会自动加个来源参数
         const tempString = window.location.href.indexOf("?") === -1 ? "?" : "&";
@@ -182,6 +188,27 @@ export default {
   margin-top: 2rem;
   cursor: pointer;
   font-size: 1rem;
+}
+
+.result-type {
+  display: flex;
+  width: 100%;
+  border: 1px solid #aaa;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.result-type__normal,
+.result-type__fun {
+  display: block;
+  flex: 1;
+  padding: 10px;
+}
+
+.result-type__item.active {
+  background-color: #4caf50;
+  color: #ffffff;
 }
 
 .hidden-input {
