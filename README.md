@@ -2,7 +2,7 @@
 
 项目地址：https://github.com/Coande/pay2me
 
-预览地址：https://e12e.com/pay2me/
+预览地址：https://pay2me.e12e.com/
 
 集合了多合一收款码的制作、展示，纯前端实现。支持微信、支付宝、QQ收款码的多合一。
 
