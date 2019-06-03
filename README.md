@@ -1,4 +1,4 @@
-<img src="https://i.loli.net/2019/04/10/5cadb0e305505.jpg" alt="效果展示" width="400px" />
+<img src="https://i.loli.net/2019/05/08/5cd2738059e88.png" alt="效果展示" width="400px" />
 
 项目地址：https://github.com/Coande/pay2me
 
